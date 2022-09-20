@@ -4,16 +4,17 @@ emp_list = "employee_list.json"
 
 
 class Employee:
-    def __init__(self, name, id, role, dept, password):
+    def __init__(self, name, id, role, dept, password,count):
         self.name = name
         self.id = id
         self.role = role
         self.dept = dept
         self.password = password
+        self.count=count
 
 
-def createEmployee(name, id, role, dept, password):
-    emp = Employee(name, id, role, dept, password)
+def createEmployee(name, id, role, dept, password,count):
+    emp = Employee(name, id, role, dept, password,count)
     with open(emp_list) as json_file:
         data = json.load(json_file)
     data.append(
@@ -23,6 +24,7 @@ def createEmployee(name, id, role, dept, password):
             "role": emp.role,
             "dept": emp.dept,
             "password": emp.password,
+            "count":emp.count
         }
     )
     with open(emp_list, mode="w") as json_file:

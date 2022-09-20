@@ -1,6 +1,7 @@
 import employee
 import task
 import json
+import gm_taskassign
 
 
 def registerEmployee():
@@ -10,20 +11,32 @@ def registerEmployee():
     role = input("enter the role of the employee: ")
     dept = input("enter the dept of the employee: ")
     password = input("enter the password employee: ")
+    count=int(0)
 
-    employee.createEmployee(name, id, role, dept, password)
+    employee.createEmployee(name, id, role, dept, password,count)
 
 
 def registerTask():
+    assignedBy=""
+    rol=""
     print("You are in the Task Assign Portal----")
     name = input("enter the name of the Task: ")
     id = input("enter the work id of the Task: ")
-    status=input("enter the status of the Task: ")
     dept = input("enter the name of the dept: ")
-    rol = input("enter the rol whome the task will be assigned: ")
-    assignedBy = input("enter the name: ")
+    print("status: unassigned, assigned, pending, resolved")
+    status = input("enter the status of the Task: ") #unassigned, assigned, pending, resolved
+    if status=="assigned":
+        print("rol:0--GM,1:M_S,2:M_H,3-5:W_S,6-9:W_H")
+        role = input("enter the rol whome the task will be assigned: ")# role:0--GM,1:M_S,2:M_H,3-5:W_S,6-9:W_H
+        rol=role
+        result=gm_taskassign.checker(role)# this result is counting assigned task is 3 or less
+        if(result):
+            assignedBy = input("enter the name: ")
+            task.createTask(name, id, dept, rol, assignedBy, status)
 
-    task.createTask(name, id, dept, rol,assignedBy,status)
+
+
+
 
 
 
@@ -64,6 +77,8 @@ def login():
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
 
             break
+    else:
+        print("Wrong Name or Password. Please Try Again")
 
 
 if __name__ == "__main__":

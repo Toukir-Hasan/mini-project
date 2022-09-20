@@ -1,6 +1,1 @@
-[
-  {"name": "planning", "work_id": "0", "dept": "software", "rol": "1", "assignedBy": "gm", "status": "assigned"}
-
-
-
-]
+[{"name": "planning", "work_id": "0", "dept": "software", "rol": "1", "assignedBy": "gm", "status": "assigned"}, {"name": "flow", "work_id": "1", "dept": "soft", "rol": "1", "assignedBy": "gm", "status": "assigned"}, {"name": "chart", "work_id": "soft", "dept": "soft", "rol": "1", "assignedBy": "gm", "status": "assigned"}]
