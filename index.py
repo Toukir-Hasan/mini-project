@@ -2,6 +2,7 @@ import employee
 import task
 import json
 import gm_taskassign
+import gm_taskreport
 
 
 def registerEmployee():
@@ -31,8 +32,9 @@ def registerTask():
         rol=role
         result=gm_taskassign.checker(role)# this result is counting assigned task is 3 or less
         if(result):
-            assignedBy = input("enter the name: ")
-            task.createTask(name, id, dept, rol, assignedBy, status)
+            assignedBy = input("enter the name who is assigning the work: ")
+            assignedTo=input("enter the name who will be doing the work: ")
+            task.createTask(name, id, dept, rol, assignedBy, status,assignedTo)
 
 
 
@@ -55,9 +57,12 @@ def login():
                 role = "GM"
                 dept=i['dept']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-                wish=int(input("what you would like to do (0-for task assign,): "))
+                wish=int(input("what you would like to do (0-for task assign,1-for task status): "))
                 if wish==0:
                     registerTask()
+                elif wish==1:
+                    gm_taskreport.report()
+
 
             elif i["role"] == "1":
                role="M_software"
