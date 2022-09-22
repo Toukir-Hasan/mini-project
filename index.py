@@ -3,6 +3,7 @@ import task
 import json
 import gm_taskassign
 import gm_taskreport
+import manager_taskassign
 
 
 def registerEmployee():
@@ -68,6 +69,11 @@ def login():
                role="M_software"
                dept = i['dept']
                print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
+               wish=int(input("what you would like to do (0-for task assign,): "))
+               if wish==0:
+                   manager_taskassign.manager_taskassigner(dept)
+
+
             elif i["role"] == "2":
                 role = "M_hardware"
                 dept = i['dept']
