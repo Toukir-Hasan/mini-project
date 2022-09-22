@@ -32,4 +32,4 @@ def createTask(name, id, dept, rol,assignedBy,status,assignedTo):
     )
     with open(task_list, mode="w") as json_file:
         json.dump(data, json_file)
-        print("Task Assigned!")
+        print("Task Created!")

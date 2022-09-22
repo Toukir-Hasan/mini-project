@@ -4,6 +4,7 @@ import json
 import gm_taskassign
 import gm_taskreport
 import manager_taskassign
+import worker_assigntask
 
 
 def registerEmployee():
@@ -21,12 +22,13 @@ def registerEmployee():
 def registerTask():
     assignedBy=""
     rol=""
+
     print("You are in the Task Assign Portal----")
     name = input("enter the name of the Task: ")
     id = input("enter the work id of the Task: ")
     dept = input("enter the name of the dept: ")
-    print("status: unassigned, assigned, pending, resolved")
-    status = input("enter the status of the Task: ") #unassigned, assigned, pending, resolved
+    print("status: unassigned, assigned, cancel, reassign")
+    status = input("enter the status of the Task: ") #unassigned, assigned, cancel, reassign
     if status=="assigned":
         print("rol:0--GM,1:M_S,2:M_H,3-5:W_S,6-9:W_H")
         role = input("enter the rol whome the task will be assigned: ")# role:0--GM,1:M_S,2:M_H,3-5:W_S,6-9:W_H
@@ -36,6 +38,12 @@ def registerTask():
             assignedBy = input("enter the name who is assigning the work: ")
             assignedTo=input("enter the name who will be doing the work: ")
             task.createTask(name, id, dept, rol, assignedBy, status,assignedTo)
+    elif status=="unassigned":
+        assignedTo=""
+        assignedBy = input("enter the name who is assigning the work: ")
+        task.createTask(name, id, dept, rol, assignedBy, status, assignedTo)
+
+
 
 
 
@@ -58,34 +66,49 @@ def login():
                 role = "GM"
                 dept=i['dept']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-                wish=int(input("what you would like to do (0-for task assign,1-for task status): "))
+                wish=int(input("what you would like to do (0-for task assign,1-for task status,2-for unassigned task): "))
                 if wish==0:
                     registerTask()
                 elif wish==1:
                     gm_taskreport.report()
+                elif wish == 2:
+                    registerTask()
 
 
             elif i["role"] == "1":
                role="M_software"
                dept = i['dept']
                print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-               wish=int(input("what you would like to do (0-for task assign,): "))
+               wish=int(input("what you would like to do (0-for task assign, 1-for Unassigned Task): "))
                if wish==0:
                    manager_taskassign.manager_taskassigner(dept)
+               elif wish == 1:
+                   registerTask()
 
 
             elif i["role"] == "2":
                 role = "M_hardware"
                 dept = i['dept']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-            elif i["role"] >= 3 and i["role"] <= 5  :
-                role = "W_software"
+                wish = int(input("what you would like to do (0-for task assign,1-for Unassigned Task): "))
+                if wish == 0:
+                    manager_taskassign.manager_taskassigner(dept)
+                elif wish == 1:
+                    registerTask()
+            elif i["role"] == "3" or i["role"] == "4" or i["role"] == "5"  :
+                cha = "W_software"
                 dept = i['dept']
-                print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-            elif i["role"] >= 6 and i["role"] <= 9  :
+                role=i['role']
+                name=i['name']
+                print("Welcome", i["name"], ",your role is", cha, ",Department is: ", dept)
+                result=worker_assigntask.worker_self_task_assigner(dept,role,name)
+            elif i["role"] == "6" or i["role"] == "7" or i["role"] == "8" or i["role"] == "9"  :
                 role = "W_hardware"
                 dept = i['dept']
+                role = i['role']
+                name = i['name']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
+                result = worker_assigntask.worker_self_task_assigner(dept, role, name)
 
             break
     else:

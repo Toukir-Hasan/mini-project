@@ -15,9 +15,7 @@ class GM_taskassigner:
                     return False
                     break
                 else:
-                    print(i['count'])
                     i['count']+=1
-                    print()
                     with open(emp_list, mode="w") as json_file:
                         json.dump(data, json_file)
                     return True
