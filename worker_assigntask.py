@@ -1,4 +1,5 @@
 import json
+import notificationpy
 task="task_list.json"
 emp="employee_list.json"
 
@@ -33,6 +34,7 @@ class Workers_taskassigner:
                                 i['assignedto'] = self.name
                                 with open(task, mode="w") as json_file:
                                     json.dump(data, json_file)
+                                notificationpy.notification_gm_manager(i['work_id'], i['dept'], i['assignedto'])
                                 break
                         for i in data_1:
                             if i['role']==self.rol:
@@ -40,6 +42,7 @@ class Workers_taskassigner:
                                 with open(emp, mode="w") as json_file:
                                     json.dump(data_1, json_file)
                                 print("Task Assign to yourself")
+
                                 return True
                                 break
         else:
@@ -69,6 +72,7 @@ class Workers_taskassigner:
                                 i['assignedto'] = self.name
                                 with open(task, mode="w") as json_file:
                                     json.dump(data, json_file)
+                                notificationpy.notification_gm_manager(i['work_id'],i['dept'],i['assignedto'])
                                 break
                         for i in data_1:
                             if i['role']==self.rol:
@@ -78,6 +82,7 @@ class Workers_taskassigner:
                                 print("Task Assign to yourself")
                                 return True
                                 break
+
         else:
             return False
 

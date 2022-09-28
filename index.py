@@ -5,6 +5,7 @@ import gm_taskassign
 import gm_taskreport
 import manager_taskassign
 import worker_assigntask
+import notificationpy
 
 
 def registerEmployee():
@@ -38,6 +39,7 @@ def registerTask():
             assignedBy = input("enter the name who is assigning the work: ")
             assignedTo=input("enter the name who will be doing the work: ")
             task.createTask(name, id, dept, rol, assignedBy, status,assignedTo)
+            notificationpy.notification_gm_manager(id,dept,assignedTo)
     elif status=="unassigned":
         assignedTo=""
         assignedBy = input("enter the name who is assigning the work: ")
@@ -66,35 +68,44 @@ def login():
                 role = "GM"
                 dept=i['dept']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-                wish=int(input("what you would like to do (0-for task assign,1-for task status,2-for unassigned task): "))
+                wish=int(input("what you would like to do (0-for task assign,1-for task status,2-for unassigned task,3-Notification): "))
                 if wish==0:
                     registerTask()
                 elif wish==1:
                     gm_taskreport.report()
                 elif wish == 2:
                     registerTask()
+                elif wish == 3:
+                    notificationpy.notification_gm_manager_viewer(i['role'])
 
 
             elif i["role"] == "1":
                role="M_software"
                dept = i['dept']
                print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-               wish=int(input("what you would like to do (0-for task assign, 1-for Unassigned Task): "))
+               wish=int(input("what you would like to do (0-for task assign, 1-for Unassigned Task,2-Notification): "))
                if wish==0:
                    manager_taskassign.manager_taskassigner(dept)
                elif wish == 1:
                    registerTask()
+               elif wish == 2:
+                   notificationpy.notification_gm_manager_viewer(i['role'])
+
+
 
 
             elif i["role"] == "2":
                 role = "M_hardware"
                 dept = i['dept']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-                wish = int(input("what you would like to do (0-for task assign,1-for Unassigned Task): "))
+                wish = int(input("what you would like to do (0-for task assign,1-for Unassigned Task,2-Notification): "))
                 if wish == 0:
                     manager_taskassign.manager_taskassigner(dept)
                 elif wish == 1:
                     registerTask()
+                elif wish == 2:
+                    notificationpy.notification_gm_manager_viewer(i['role'])
+
             elif i["role"] == "3" or i["role"] == "4" or i["role"] == "5"  :
                 cha = "W_software"
                 dept = i['dept']

@@ -1,5 +1,6 @@
 import task
 import gm_taskassign
+import notificationpy
 
 class Manager_taskassigner:
     def __init__(self,dept):
@@ -12,8 +13,8 @@ class Manager_taskassigner:
         id = input("enter the work id of the Task: ")
         dept = input("enter the name of the dept (software/hardware): ")
         if dept==self.dept:
-            print("status: unassigned, assigned, cancel, resolve")
-            status = input("enter the status of the Task: ")  # unassigned, assigned, pending, resolved
+            print("status: unassigned, assigned, cancel, reassign")
+            status = input("enter the status of the Task: ")  # unassigned, assigned, pending, reassign
             if status == "assigned":
                 print("rol:0--GM,1:M_S,2:M_H,3-5:W_S,6-9:W_H")
                 role = input(
@@ -25,6 +26,7 @@ class Manager_taskassigner:
                     assignedBy = input("enter the name who is assigning the work: ")
                     assignedTo = input("enter the name who will be doing the work: ")
                     task.createTask(name, id, dept, rol, assignedBy, status, assignedTo)
+                    notificationpy.notification_gm_manager(id,dept,assignedTo)
             elif status=="Unassigned":
                 assignedBy = input("enter the name who is assigning the work: ")
                 assignedTo = ""
@@ -58,6 +60,7 @@ class Manager_taskassigner:
                     assignedBy = input("enter the name who is assigning the work: ")
                     assignedTo = input("enter the name who will be doing the work: ")
                     task.createTask(name, id, dept, rol, assignedBy, status, assignedTo)
+                    notificationpy.notification_gm_manager(id, dept, assignedTo)
 
             elif status == "Unassigned":
                 assignedBy = input("enter the name who is assigning the work: ")
