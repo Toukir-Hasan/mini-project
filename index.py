@@ -7,7 +7,9 @@ import manager_taskassign
 import worker_assigntask
 import notificationpy
 
-
+task_list="task_list.json"
+permission_list='notification.json'
+new_permission='permission.json'
 def registerEmployee():
     print("you are on the Registration Portal---")
     name = input("enter the name of the employee: ")
@@ -68,7 +70,7 @@ def login():
                 role = "GM"
                 dept=i['dept']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-                wish=int(input("what you would like to do (0-for task assign,1-for task status,2-for unassigned task,3-Notification): "))
+                wish=int(input("what you would like to do (0-for task assign,1-for task status,2-for unassigned task,3-Notification,4-permission): "))
                 if wish==0:
                     registerTask()
                 elif wish==1:
@@ -77,19 +79,80 @@ def login():
                     registerTask()
                 elif wish == 3:
                     notificationpy.notification_gm_manager_viewer(i['role'])
+                elif wish==4:
+                    with open(new_permission) as json_file:
+                        data = json.load(json_file)
+
+                    for i in data:
+                        print("ooo")
+                        if i['permission'] == 'cancel' or i['permission'] == 'reassign':
+                            print(i)
+                    wish_2=input('Do u like to cancel or reassign tasks? yes or no' )
+                    if wish_2=='yes':
+                        id=input("please provide the work id: ")
+                        dept=input("please provide the department ")
+                        status=input("please write the status of the work: ")
+                        with open(task_list) as json_file:
+                            data = json.load(json_file)
+                        for i in data:
+                            if i['dept']==dept and i['work_id']==id:
+                                i['rol']=''
+                                i['status']=status
+                                i['assignedto']=''
+                                i['assignedBy']=''
+                                print("permission Given")
+                                break
+                        with open(task_list,mode="w") as json_file:
+                             json.dump(data,json_file)
+                        with open(new_permission) as json_file:
+                            data_1 = json.load(json_file)
+                        for i in data_1:
+                            if i['id']==id:
+                                print("ooo")
+                                del i['id']
+                                del i['dept']
+                                del i['permission']
+                        with open(new_permission, mode="w") as json_file:
+                            json.dump(data_1, json_file)
+
+
+
+
+
+                    elif wish_2=="no":
+                        pass
+
+
 
 
             elif i["role"] == "1":
                role="M_software"
                dept = i['dept']
                print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-               wish=int(input("what you would like to do (0-for task assign, 1-for Unassigned Task,2-Notification): "))
+               wish=int(input("what you would like to do (0-for task assign, 1-for Unassigned Task,2-Notification,3-cancel or reassign): "))
                if wish==0:
                    manager_taskassign.manager_taskassigner(dept)
                elif wish == 1:
                    registerTask()
                elif wish == 2:
                    notificationpy.notification_gm_manager_viewer(i['role'])
+               elif wish==3:
+                   with open(task_list) as json_file:
+                       data = json.load(json_file)
+                   for i in data:
+                       if i['dept'] == 'software':
+                           print(i)
+                   wish_1=input("what would U like to do?: " 'cancel or reassign')
+                   if wish_1=='cancel':
+                       id = input("Please provide the Work ID")
+                       dept = input("Please provide the department Name ")
+                       cancel = "cancel"
+
+                       notificationpy.permission_viewer(id, dept, cancel)
+                   elif wish_1=="reassign":
+                       id = input("Please provide the Work ID")
+                       dept = input("Please provide the department Name ")
+                       notificationpy.permission_viewer(id, dept, "reassign")
 
 
 
@@ -98,13 +161,31 @@ def login():
                 role = "M_hardware"
                 dept = i['dept']
                 print("Welcome", i["name"], ",your role is", role, ",Department is: ", dept)
-                wish = int(input("what you would like to do (0-for task assign,1-for Unassigned Task,2-Notification): "))
+                wish = int(input("what you would like to do (0-for task assign,1-for Unassigned Task,2-Notification,3-cancel or reassign): "))
                 if wish == 0:
                     manager_taskassign.manager_taskassigner(dept)
                 elif wish == 1:
                     registerTask()
                 elif wish == 2:
                     notificationpy.notification_gm_manager_viewer(i['role'])
+                elif wish == 3:
+                    wish_1 = input("what would U like to do?: " 'cancel or reassign')
+                    with open(task_list) as json_file:
+                        data = json.load(json_file)
+
+                    for i in data:
+                        if i['dept'] == 'hardware':
+                            print(i)
+                    if wish_1 == 'cancel':
+                        id=input("Please provide the Work ID")
+                        dept=input("Please provide the department Name ")
+                        notificationpy.permission_viewer(id,dept,"cancel")
+
+
+                    elif wish_1=="reassign":
+                        id = input("Please provide the Work ID")
+                        dept = input("Please provide the department Name ")
+                        notificationpy.permission_viewer(id, dept, "reassign")
 
             elif i["role"] == "3" or i["role"] == "4" or i["role"] == "5"  :
                 cha = "W_software"

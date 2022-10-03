@@ -1,6 +1,7 @@
 import datetime
 import json
 message="notification.json"
+permission="permission.json"
 
 
 class Notification:
@@ -61,6 +62,27 @@ class Notification_viewer:
                 if i['dept']=='hardware':
                     print(i)
 
+class Permission():
+    def __init__(self,id,dept,permission):
+        self.id=id
+        self.dept=dept
+        self.permission=permission
+    def message_for_permission(self):
+        with open(permission) as json_file:
+            data = json.load(json_file)
+        data.append(
+            {
+                "id": self.id,
+                'dept':self.dept,
+                'permission':self.permission
+
+            }
+        )
+
+        with open(permission, mode="w") as json_file:
+            json.dump(data, json_file)
+
+
 
 
 def notification_gm_manager(id,dept,assignedTo):
@@ -73,3 +95,6 @@ def notification_gm_manager_viewer(role):
     info.queue_of_work_view(role)
 
 
+def permission_viewer(id,dept,permission):
+    mes=Permission(id,dept,permission)
+    mes.message_for_permission()
